@@ -53,7 +53,7 @@ function loadMenu() {
     })
     controllers.axesHelper = gui.add(options, 'axesHelper').onChange((v) => {
         axesHelper.visible = v
-})
+    })
 }
 
 
@@ -65,8 +65,8 @@ animate()
 
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight
-camera.updateProjectionMatrix()
-renderer.setSize(window.innerWidth, window.innerHeight)
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
 }, false)
 
 
@@ -223,36 +223,36 @@ function computeLayerSegments(show) {
             new THREE.Line3(vs[2], vs[0]),
         ]
         if (isHorizontalFace(vs)) {
-        ls.forEach((l) => {
-            for (let i = 0; i < out.length; i++) {
-            if (!out[i].equals(l) &&
-                !out[i].equals(new THREE.Line3(l.end, l.start))) {
-                continue
+            ls.forEach((l) => {
+                for (let i = 0; i < out.length; i++) {
+                if (!out[i].equals(l) &&
+                    !out[i].equals(new THREE.Line3(l.end, l.start))) {
+                    continue
+                }
+                out.splice(i, 1)
+                return
             }
-            out.splice(i, 1)
-            return
-        }
-        out.push(l)
-    })
-    } else { // face intersects plane
-        let ils = []
-        ls.forEach((l, i) => {
-            if (lineIntersects(l.start.y, l.end.y))
-        ils.push(i)
-    })
-        let vAt = (l) => l.at((h - l.start.y) / (l.end.y - l.start.y), new THREE.Vector3())
-        if (ils.length === 2) {
-            out.push(new THREE.Line3(vAt(ls[ils[0]]), vAt(ls[ils[1]])))
-        } else if (ils.length === 1) {
-            vs.forEach((v) => {
-                if (v.y === h)
-            out.push(new THREE.Line3(vAt(ls[ils[0]]), v))
+            out.push(l)
         })
-        } else {
-            throw "Invalid ils length: " + ils.length
-        }
+        } else { // face intersects plane
+            let ils = []
+            ls.forEach((l, i) => {
+                if (lineIntersects(l.start.y, l.end.y))
+            ils.push(i)
+            })
+            let vAt = (l) => l.at((h - l.start.y) / (l.end.y - l.start.y), new THREE.Vector3())
+            if (ils.length === 2) {
+                out.push(new THREE.Line3(vAt(ls[ils[0]]), vAt(ls[ils[1]])))
+            } else if (ils.length === 1) {
+                vs.forEach((v) => {
+                    if (v.y === h)
+                out.push(new THREE.Line3(vAt(ls[ils[0]]), v))
+            })
+            } else {
+                throw "Invalid ils length: " + ils.length
+            }
 
-    }
+        }
 
 })
 
