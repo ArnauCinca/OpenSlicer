@@ -225,20 +225,20 @@ function computeLayerSegments(show) {
         if (isHorizontalFace(vs)) {
             ls.forEach((l) => {
                 for (let i = 0; i < out.length; i++) {
-                if (!out[i].equals(l) &&
-                    !out[i].equals(new THREE.Line3(l.end, l.start))) {
-                    continue
+                    if (!out[i].equals(l) &&
+                        !out[i].equals(new THREE.Line3(l.end, l.start))) {
+                        continue
+                    }
+                    out.splice(i, 1)
+                    return
                 }
-                out.splice(i, 1)
-                return
-            }
-            out.push(l)
-        })
+                out.push(l)
+            })
         } else { // face intersects plane
             let ils = []
             ls.forEach((l, i) => {
                 if (lineIntersects(l.start.y, l.end.y))
-            ils.push(i)
+                    ils.push(i)
             })
             let vAt = (l) => l.at((h - l.start.y) / (l.end.y - l.start.y), new THREE.Vector3())
             if (ils.length === 2) {
@@ -246,15 +246,15 @@ function computeLayerSegments(show) {
             } else if (ils.length === 1) {
                 vs.forEach((v) => {
                     if (v.y === h)
-                out.push(new THREE.Line3(vAt(ls[ils[0]]), v))
-            })
+                        out.push(new THREE.Line3(vAt(ls[ils[0]]), v))
+                })
             } else {
                 throw "Invalid ils length: " + ils.length
             }
 
         }
 
-})
+    })
 
     out.forEach((l) => makeLine(l))
 
